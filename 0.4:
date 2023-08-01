@@ -10,9 +10,24 @@ sequenceDiagram
     participant browser
     participant server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
-    deactivate server
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    server-->>browser: HTTP status code 302 Found 
+    
+    Note right of browser: This is a URL redirect, with which server asks broser to do a new HTTP GET request to address defined in the header's lcoation - the address notes 
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    server-->>browser: HTTP status code 200 OK (html file)
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    server-->>browser: HTTP status code 200 OK (css file)
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    server-->>browser: HTTP status code 200 OK (JS file)
+    
+    Note right of browser: browser starts executing js-code that requests JSON data from server 
 
-    Note right of browser: The browser executes the callback function that renders the notes
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    server-->>browser: [..., {content: ":D", date: "2023-08-01T10:32:49.347Z"}]
+    
+    Note right of browser: browser executes the event handler that renders notes to display 
+
