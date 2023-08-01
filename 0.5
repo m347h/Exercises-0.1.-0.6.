@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    server-->>browser: HTTP status code 200 OK (HTML - code of the page)
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    server-->>browser: HTTP status code 200 OK (main.css)
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    server-->>browser: HTTP status code 200 OK (main.js)
+    
+    Note right of browser: browser starts executing js-code that requests JSON data from server 
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    server-->>browser: [...,{content: "myTest", date: "2023-08-01T10:40:27.363Z"}]
+
+    Note right of browser: browser executes the event handler that renders notes to display  
